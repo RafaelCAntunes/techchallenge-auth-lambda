@@ -10,34 +10,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout do repositório
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2️⃣ Configurar Java 17
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: 17
 
-      # 3️⃣ Build da Lambda
       - name: Build Lambda JAR
         working-directory: ./techchallenge-auth-lambda
         run: mvn clean package
 
-      # 4️⃣ Configurar Terraform
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.7.0
 
-      # 5️⃣ Terraform init
       - name: Terraform Init
         working-directory: ./terraform
         run: terraform init
 
-      # 6️⃣ Terraform Apply (somente Lambdas)
       - name: Terraform Apply
         working-directory: ./terraform
         run: terraform apply -auto-approve
