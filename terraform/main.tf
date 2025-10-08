@@ -1,3 +1,20 @@
+terraform {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
+}
+
+terraform {
+  backend "remote" {
+    organization = "techchallenge-lanchonete"
+
+    workspaces {
+      name = "techchallenge-auth-lambda"
+    }
+  }
+}
+
 provider "aws" {
   region = var.aws_region
 }
