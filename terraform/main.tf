@@ -22,7 +22,7 @@ resource "aws_iam_role_policy_attachment" "lambda_basic" {
 
 # --- Lambda TokenIssuer ---
 resource "aws_lambda_function" "token_issuer" {
-  filename      = "../techchallenge-auth-lambda/target/auth-lambda.jar"
+  filename      = "../target/auth-lambda.jar"
   function_name = "${var.service_name}-token-issuer"
   handler       = "com.techchallenge.auth.TokenIssuerHandler"
   runtime       = "java17"
@@ -44,7 +44,7 @@ resource "aws_lambda_function" "token_issuer" {
 
 # --- Lambda JwtAuthorizer ---
 resource "aws_lambda_function" "jwt_authorizer" {
-  filename      = "../techchallenge-auth-lambda/target/auth-lambda.jar"
+  filename      = "../target/auth-lambda.jar"
   function_name = "${var.service_name}-jwt-authorizer"
   handler       = "com.techchallenge.auth.JwtAuthorizerHandler"
   runtime       = "java17"

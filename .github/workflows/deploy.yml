@@ -31,6 +31,9 @@ jobs:
         with:
           terraform_version: 1.7.0
 
+      - name: Check JAR
+        run: ls -l ./techchallenge-auth-lambda/target
+
       - name: Terraform Init
         working-directory: ./terraform
         env:
