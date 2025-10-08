@@ -20,7 +20,7 @@ jobs:
           java-version: 17
 
       - name: Build Lambda JAR
-        working-directory: ./techchallenge-auth-lambda
+        working-directory: ./
         run: mvn clean package
 
       - name: Setup Terraform
