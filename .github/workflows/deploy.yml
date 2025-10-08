@@ -19,7 +19,12 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      #só para debugar o path
+      - name: Debug repository
+          run: ls -R
+
       - name: Build Lambda JAR
+        working-directory: ./techchallenge-auth-lambda
         run: mvn clean package
 
       - name: Setup Terraform
