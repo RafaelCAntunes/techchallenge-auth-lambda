@@ -21,7 +21,7 @@ jobs:
 
       #só para debugar o path
       - name: Debug repository
-          run: ls -R
+        run: ls -R
 
       - name: Build Lambda JAR
         working-directory: ./techchallenge-auth-lambda
