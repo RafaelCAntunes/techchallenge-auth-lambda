@@ -1,4 +1,4 @@
-variable "aws_region" {}
+  variable "aws_region" {}
 variable "service_name" {}
 variable "db_host" {}
 variable "db_user" {}

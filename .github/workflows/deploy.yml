@@ -26,6 +26,14 @@ jobs:
       - name: Build Lambda JAR
         run: mvn clean package
 
+      - name: Upload Lambda JAR to S3
+        run: |
+          aws s3 cp target/auth-lambda.jar s3://techchallenge-lambda-artifacts/auth-lambda.jar
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.TF_VAR_AWS_REGION }}
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
