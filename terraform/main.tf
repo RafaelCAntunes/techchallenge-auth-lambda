@@ -21,6 +21,17 @@ provider "aws" {
   region = var.aws_region
 }
 
+data "terraform_remote_state" "eks" {
+  backend = "remote"
+
+  config = {
+    organization = "techchallenge-lanchonete"
+    workspaces = {
+      name = "techchallenge-infra-k8s"
+    }
+  }
+}
+
 # --- IAM Role para Lambda ---
 resource "aws_iam_role" "lambda_exec" {
   name = "${var.service_name}-lambda-exec"
@@ -39,6 +50,11 @@ resource "aws_iam_role_policy_attachment" "lambda_basic" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
+resource "aws_iam_role_policy_attachment" "lambda_vpc" {
+  role       = aws_iam_role.lambda_exec.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+
 # --- Lambda TokenIssuer ---
 resource "aws_lambda_function" "token_issuer" {
   s3_bucket     = "techchallenge-lambda-artifacts"
@@ -49,6 +65,11 @@ resource "aws_lambda_function" "token_issuer" {
   role          = aws_iam_role.lambda_exec.arn
   memory_size   = 512
   timeout       = 20
+
+  vpc_config {
+    subnet_ids         = data.terraform_remote_state.eks.outputs.subnet_ids
+    security_group_ids = data.terraform_remote_state.eks.outputs.security_groups
+  }
 
   environment {
     variables = {
@@ -72,6 +93,11 @@ resource "aws_lambda_function" "jwt_authorizer" {
   role          = aws_iam_role.lambda_exec.arn
   memory_size   = 512
   timeout       = 15
+
+  vpc_config {
+    subnet_ids = data.terraform_remote_state.eks.outputs.subnet_ids
+    security_group_ids = data.terraform_remote_state.eks.outputs.security_groups
+  }
 
   environment {
     variables = {
