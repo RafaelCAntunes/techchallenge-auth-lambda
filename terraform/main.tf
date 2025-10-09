@@ -68,7 +68,7 @@ resource "aws_lambda_function" "token_issuer" {
 
   vpc_config {
     subnet_ids         = data.terraform_remote_state.eks.outputs.subnet_ids
-    security_group_ids = data.terraform_remote_state.eks.outputs.security_groups
+    security_group_ids = [data.terraform_remote_state.eks.outputs.security_groups]
   }
 
   environment {
@@ -96,7 +96,7 @@ resource "aws_lambda_function" "jwt_authorizer" {
 
   vpc_config {
     subnet_ids = data.terraform_remote_state.eks.outputs.subnet_ids
-    security_group_ids = data.terraform_remote_state.eks.outputs.security_groups
+    security_group_ids = [data.terraform_remote_state.eks.outputs.security_groups]
   }
 
   environment {
