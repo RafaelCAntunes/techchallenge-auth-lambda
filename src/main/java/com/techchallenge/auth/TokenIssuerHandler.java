@@ -44,7 +44,11 @@ public class TokenIssuerHandler implements RequestHandler<APIGatewayProxyRequest
                         .withBody("{\"error\":\"DB_HOST not provided in env or secret\"}");
             }
 
-            String jdbcUrl = String.format("jdbc:mysql://%s:3306/%s?useSSL=false&serverTimezone=UTC", host, database);
+            String jdbcUrl = String.format(
+                    "jdbc:mysql://%s:3306/%s?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true",
+                    host,
+                    database
+            );
 
             boolean exists;
             try (Connection conn = DriverManager.getConnection(jdbcUrl, username, password);
