@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      TF_CLOUD_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
+      TF_API_TOKEN: ${{ secrets.TFC_API_TOKEN }}
 
     steps:
       - name: Checkout repository
@@ -35,7 +35,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          TF_CLOUD_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
+          TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
         working-directory: ./terraform
         run: terraform init
 
@@ -43,7 +43,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          TF_CLOUD_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
+          TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
         working-directory: ./terraform
         run: terraform plan
 
@@ -56,7 +56,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
           # Terraform Cloud API Token
-          TF_CLOUD_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
+          TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
 
           # Variáveis do Terraform para Lambda
           TF_VAR_aws_region: ${{ secrets.TF_VAR_AWS_REGION }}
