@@ -21,7 +21,6 @@ public class JwtAuthorizerHandler implements RequestHandler<Map<String,Object>, 
     @Override
     public IamPolicyResponse handleRequest(Map<String,Object> event, Context context) {
         try {
-            // espera header Authorization: Bearer <token>
             Map headers = (Map) event.get("headers");
             if (headers == null) return generatePolicy("unknown","Deny","*");
 
@@ -37,7 +36,11 @@ public class JwtAuthorizerHandler implements RequestHandler<Map<String,Object>, 
             String cpf = jwt.getClaim("cpf").asString();
             if (cpf == null || cpf.isBlank()) return generatePolicy("unknown","Deny","*");
 
-            return generatePolicy(cpf,"Allow", (String) event.getOrDefault("methodArn","*"));
+            String methodArn = (String) event.get("methodArn");
+            // Ajusta resource para liberar todas as rotas no stage:
+            String resource = methodArn.substring(0, methodArn.lastIndexOf("/")) + "/*";
+
+            return generatePolicy(cpf,"Allow", resource);
         } catch (Exception e) {
             context.getLogger().log("JWT validation failed: " + e.getMessage());
             return generatePolicy("unknown","Deny","*");
